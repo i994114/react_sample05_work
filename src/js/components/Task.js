@@ -8,8 +8,8 @@ export default class Task extends React.Component {
     this.state = {
       id: this.props.id,
       text: this.props.text,
-      isDone: false,
-      editMode: false
+      editMode: false,
+      isDone: this.props.isDone
     };
     this.handleClickToggleDone = this.handleClickToggleDone.bind(this);
     this.handleClickRemove = this.handleClickRemove.bind(this);
@@ -22,10 +22,12 @@ export default class Task extends React.Component {
       text: e.target.value
     });
   }
-  handleClickToggleDone () {
-    this.setState(prevState => ({
-      isDone: !prevState.isDone
-    }));
+  handleClickToggleDone (e) {
+    console.log('Task.js isDone OK');
+    this.props.onDone(this.state.id);
+    this.setState({
+      isDone: !this.state.isDone
+    });
   }
   handleClickRemove(e) {
     // 親から渡ってきた関数を実行することで、親へどのitemを削除するのか通知する
@@ -62,6 +64,7 @@ export default class Task extends React.Component {
       'fa-check-circle': this.state.isDone,
       'icon-check': true
     });
+
     // underscoreのようなif文は使えないので、変数に前もって入れておく
     const input = (this.state.editMode) ?
       <input type="text" className="editText" value={this.state.text}
